@@ -55,7 +55,7 @@ class MainActivity : FlutterActivity() {
         val replyText = RemoteInput.getResultsFromIntent(intent)
             ?.getCharSequence(NotificationActions.REMOTE_INPUT_KEY)
             ?.toString()
-        if (notificationID != -1) return
+        if (notificationID == -1) return
         pendingOpenPayload = mapOf(
             "action" to intent.action,
             "reply" to replyText,
