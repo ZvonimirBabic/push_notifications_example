@@ -22,7 +22,7 @@ object NotificationChannels {
       setShowBadge(true)
     }
 
-    val manager = context.getSystemService(NotificationManager::class.java)
-    manager.createNotificationChannel(highImportanceChannel)
+    val nm = context.getSystemService(NotificationManager::class.java)
+    nm.createNotificationChannel(highImportanceChannel)
   }
 }
