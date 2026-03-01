@@ -1,4 +1,4 @@
-package hr.zvonimirbabic.notifications.notification_helper
+package hr.zvonimirbabic.push_notifications_example.notification_helper
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -6,13 +6,12 @@ import android.content.Context
 import android.os.Build
 
 object NotificationChannels {
-  const val CHANNEL_HIGH_IMPORTANCE_ID = "high_importance_channel"
 
   fun createHighImportanceNotificationChannel(context: Context) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
 
     val highImportanceChannel = NotificationChannel(
-      CHANNEL_HIGH_IMPORTANCE_ID,
+      NotificationChannels.CHANNEL_HIGH_IMPORTANCE_ID,
       "High importance channel",
       NotificationManager.IMPORTANCE_HIGH
     ).apply {

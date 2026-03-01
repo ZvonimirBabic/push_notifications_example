@@ -20,13 +20,16 @@ object NotificationActions {
     const val EXTRA_NOTIFICATION_ID = "extra_notification_id"
     private const val FROM_NOTIFICATION_VALUE = "1"
 
-    /// RemoteInput key
     const val REMOTE_INPUT_KEY = "REMOTE_INPUT_KEY"
 
-    fun accept(context: Context, id:Int): NotificationCompat.Action {
+    private fun requestCode(actionId: Int, notificationId: Int): Int {
+        return actionId * 100_000 + notificationId
+    }
+
+    fun accept(context: Context, id: Int): NotificationCompat.Action {
         val activityPI = PendingIntent.getActivity(
             context,
-            ACTION_ACCEPT_ID,
+            requestCode(ACTION_ACCEPT_ID, id),
             Intent(context, MainActivity::class.java)
                 .setAction(ACTION_ACCEPT)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -39,14 +42,15 @@ object NotificationActions {
             activityPI
         ).build()
     }
-    fun decline(context: Context,id:Int): NotificationCompat.Action {
+
+    fun decline(context: Context, id: Int): NotificationCompat.Action {
         val activityPI = PendingIntent.getActivity(
             context,
-            ACTION_DECLINE_ID,
+            requestCode(ACTION_DECLINE_ID, id),
             Intent(context, MainActivity::class.java)
                 .setAction(ACTION_DECLINE)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                .putExtra(EXTRA_NOTIFICATION_ID,id),
+                .putExtra(EXTRA_NOTIFICATION_ID, id),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         return NotificationCompat.Action.Builder(
@@ -56,10 +60,10 @@ object NotificationActions {
         ).build()
     }
 
-    fun reply(context: Context,id:Int): NotificationCompat.Action {
+    fun reply(context: Context, id: Int): NotificationCompat.Action {
         val activityPI = PendingIntent.getActivity(
             context,
-            ACTION_REPLY_ID,
+            requestCode(ACTION_REPLY_ID, id),
             Intent(context, MainActivity::class.java)
                 .setAction(ACTION_REPLY)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -69,6 +73,7 @@ object NotificationActions {
         val remoteInput = RemoteInput.Builder(REMOTE_INPUT_KEY)
             .setLabel("Reply")
             .build()
+
         return NotificationCompat.Action.Builder(
             android.R.drawable.ic_menu_send,
             "Reply",
@@ -80,11 +85,10 @@ object NotificationActions {
     }
 
     fun cancelIfPresent(context: Context, intent: Intent?) {
-        if(intent == null) return
+        if (intent == null) return
         val notificationID = intent.getIntExtra(EXTRA_NOTIFICATION_ID, -1)
         if (notificationID == -1) return
-            val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            nm.cancel(notificationID)
+        val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        nm.cancel(notificationID)
     }
 }
-

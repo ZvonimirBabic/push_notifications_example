@@ -25,7 +25,7 @@ class NotificationHelperService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        buildNotification(remoteMessage,)
+        buildNotification(remoteMessage)
     }
 
 
